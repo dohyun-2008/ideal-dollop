@@ -116,17 +116,28 @@ def show_available_algorithms():
         kem_mechanisms = oqs.get_enabled_kem_mechanisms()
         sig_mechanisms = oqs.get_enabled_sig_mechanisms()
         
-        print(f"KEM Mechanisms ({len(kem_mechanisms)}):")
-        for i, alg in enumerate(list(kem_mechanisms.keys())[:10]):
-            print(f"  {i+1:2d}. {alg}")
-        if len(kem_mechanisms) > 10:
-            print(f"      ... and {len(kem_mechanisms) - 10} more")
+        # Handle both tuple and dict return types for compatibility
+        if isinstance(kem_mechanisms, dict):
+            kem_list = list(kem_mechanisms.keys())
+        else:
+            kem_list = list(kem_mechanisms)
             
-        print(f"\nSignature Mechanisms ({len(sig_mechanisms)}):")
-        for i, alg in enumerate(list(sig_mechanisms.keys())[:10]):
+        if isinstance(sig_mechanisms, dict):
+            sig_list = list(sig_mechanisms.keys())
+        else:
+            sig_list = list(sig_mechanisms)
+        
+        print(f"KEM Mechanisms ({len(kem_list)}):")
+        for i, alg in enumerate(kem_list[:10]):
             print(f"  {i+1:2d}. {alg}")
-        if len(sig_mechanisms) > 10:
-            print(f"      ... and {len(sig_mechanisms) - 10} more")
+        if len(kem_list) > 10:
+            print(f"      ... and {len(kem_list) - 10} more")
+            
+        print(f"\nSignature Mechanisms ({len(sig_list)}):")
+        for i, alg in enumerate(sig_list[:10]):
+            print(f"  {i+1:2d}. {alg}")
+        if len(sig_list) > 10:
+            print(f"      ... and {len(sig_list) - 10} more")
             
     except Exception as e:
         print(f"Error getting algorithms: {e}")

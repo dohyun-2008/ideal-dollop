@@ -45,9 +45,20 @@ class QuantumCryptographySimulator:
         
     def get_algorithm_info(self) -> Dict[str, List[str]]:
         """Get information about available algorithms"""
+        # Handle both tuple and dict return types for compatibility
+        if isinstance(self.enabled_kem_mechanisms, dict):
+            kem_list = list(self.enabled_kem_mechanisms.keys())
+        else:
+            kem_list = list(self.enabled_kem_mechanisms)
+            
+        if isinstance(self.enabled_sig_mechanisms, dict):
+            sig_list = list(self.enabled_sig_mechanisms.keys())
+        else:
+            sig_list = list(self.enabled_sig_mechanisms)
+            
         return {
-            "KEM Mechanisms": list(self.enabled_kem_mechanisms.keys()),
-            "Signature Mechanisms": list(self.enabled_sig_mechanisms.keys())
+            "KEM Mechanisms": kem_list,
+            "Signature Mechanisms": sig_list
         }
     
     def simulate_kem_exchange(self, algorithm: str) -> CryptoResult:
